@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yanyu.mapper.OrdersMapper" >
+  <resultMap id="BaseResultMap" type="com.yanyu.pojo.Orders" >
+    <id column="o_id" property="oId" jdbcType="INTEGER" />
+    <result column="p_id" property="pId" jdbcType="INTEGER" />
+    <result column="p_num" property="pNum" jdbcType="INTEGER" />
+    <result column="money" property="money" jdbcType="DOUBLE" />
+    <result column="o_name" property="oName" jdbcType="VARCHAR" />
+    <result column="o_address" property="oAddress" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="paystate" property="paystate" jdbcType="INTEGER" />
+    <result column="ordertime" property="ordertime" jdbcType="TIMESTAMP" />
+    <result column="p_name" property="pName" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="BaseResultMap1" type="com.yanyu.pojo.vo.Ordersvo" >
+    <id column="o_id" property="oId" jdbcType="INTEGER" />
+    <result column="p_num" property="pNum" jdbcType="INTEGER" />
+    <result column="money" property="money" jdbcType="DOUBLE" />
+    <result column="o_name" property="oName" jdbcType="VARCHAR" />
+    <result column="o_address" property="oAddress" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="paystate" property="paystate" jdbcType="INTEGER" />
+    <result column="p_name" property="pName" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    o_id, p_id, p_num, money, o_name, o_address, phone, paystate, ordertime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.yanyu.pojo.OrdersExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from orders
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from orders
+    where o_id = #{oId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from orders
+    where o_id = #{oId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.yanyu.pojo.OrdersExample" >
+    delete from orders
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.yanyu.pojo.Orders" >
+    insert into orders (o_id, p_id, p_num, 
+      money, o_name, o_address, 
+      phone, paystate, ordertime
+      )
+    values (#{oId,jdbcType=INTEGER}, #{pId,jdbcType=INTEGER}, #{pNum,jdbcType=INTEGER}, 
+      #{money,jdbcType=DOUBLE}, #{oName,jdbcType=VARCHAR}, #{oAddress,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{paystate,jdbcType=INTEGER}, #{ordertime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yanyu.pojo.Orders" >
+    insert into orders
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="oId != null" >
+        o_id,
+      </if>
+      <if test="pId != null" >
+        p_id,
+      </if>
+      <if test="pNum != null" >
+        p_num,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="oName != null" >
+        o_name,
+      </if>
+      <if test="oAddress != null" >
+        o_address,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="paystate != null" >
+        paystate,
+      </if>
+      <if test="ordertime != null" >
+        ordertime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="oId != null" >
+        #{oId,jdbcType=INTEGER},
+      </if>
+      <if test="pId != null" >
+        #{pId,jdbcType=INTEGER},
+      </if>
+      <if test="pNum != null" >
+        #{pNum,jdbcType=INTEGER},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="oName != null" >
+        #{oName,jdbcType=VARCHAR},
+      </if>
+      <if test="oAddress != null" >
+        #{oAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="paystate != null" >
+        #{paystate,jdbcType=INTEGER},
+      </if>
+      <if test="ordertime != null" >
+        #{ordertime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.yanyu.pojo.OrdersExample" resultType="java.lang.Integer" >
+    select count(*) from orders
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update orders
+    <set >
+      <if test="record.oId != null" >
+        o_id = #{record.oId,jdbcType=INTEGER},
+      </if>
+      <if test="record.pId != null" >
+        p_id = #{record.pId,jdbcType=INTEGER},
+      </if>
+      <if test="record.pNum != null" >
+        p_num = #{record.pNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.money != null" >
+        money = #{record.money,jdbcType=DOUBLE},
+      </if>
+      <if test="record.oName != null" >
+        o_name = #{record.oName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.oAddress != null" >
+        o_address = #{record.oAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phone != null" >
+        phone = #{record.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paystate != null" >
+        paystate = #{record.paystate,jdbcType=INTEGER},
+      </if>
+      <if test="record.ordertime != null" >
+        ordertime = #{record.ordertime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update orders
+    set o_id = #{record.oId,jdbcType=INTEGER},
+      p_id = #{record.pId,jdbcType=INTEGER},
+      p_num = #{record.pNum,jdbcType=INTEGER},
+      money = #{record.money,jdbcType=DOUBLE},
+      o_name = #{record.oName,jdbcType=VARCHAR},
+      o_address = #{record.oAddress,jdbcType=VARCHAR},
+      phone = #{record.phone,jdbcType=VARCHAR},
+      paystate = #{record.paystate,jdbcType=INTEGER},
+      ordertime = #{record.ordertime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yanyu.pojo.Orders" >
+    update orders
+    <set >
+      <if test="pId != null" >
+        p_id = #{pId,jdbcType=INTEGER},
+      </if>
+      <if test="pNum != null" >
+        p_num = #{pNum,jdbcType=INTEGER},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="oName != null" >
+        o_name = #{oName,jdbcType=VARCHAR},
+      </if>
+      <if test="oAddress != null" >
+        o_address = #{oAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="paystate != null" >
+        paystate = #{paystate,jdbcType=INTEGER},
+      </if>
+      <if test="ordertime != null" >
+        ordertime = #{ordertime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where o_id = #{oId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yanyu.pojo.Orders" >
+    update orders
+    set p_id = #{pId,jdbcType=INTEGER},
+      p_num = #{pNum,jdbcType=INTEGER},
+      money = #{money,jdbcType=DOUBLE},
+      o_name = #{oName,jdbcType=VARCHAR},
+      o_address = #{oAddress,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      paystate = #{paystate,jdbcType=INTEGER},
+      ordertime = #{ordertime,jdbcType=TIMESTAMP}
+    where o_id = #{oId,jdbcType=INTEGER}
+  </update>
+  <select id="selectAll" resultMap="BaseResultMap1">
+    SELECT o.o_id,o.o_name,p.p_name,o.p_num,o.money,o.o_address,o.phone,o.paystate from orders o,product_info p where o.p_id=p.p_id order by o_id desc
+  </select>
+  <select id="selectCondition" parameterType="com.yanyu.pojo.vo.Ordersvo" resultMap="BaseResultMap1">
+  SELECT o.o_id,o.o_name,p.p_name,o.p_num,o.money,o.o_address,o.phone,o.paystate from orders o,product_info p where o.p_id=p.p_id
+    <if test="pName != null and pName !='-1'">
+    and p.p_name = '${pName}'
+    </if>
+    <if test="oName != null and oName !=''">
+      and o.o_name like '%${oName}%'
+    </if>
+    <if test="oAddress != null and oAddress !=''">
+      and o.o_address like '%${oAddress}%'
+    </if>
+    <if test="paystate != null  and paystate !=-1">
+      and o.paystate = #{paystate}
+    </if>
+    order by o_id desc
+  </select>
+  <select id="getAllName" parameterType="String" resultType="String">
+    select p_name from product_info
+  </select>
+  <select id="selectMoneyByName" parameterType="String" resultType="int">
+    select p_price from product_info where p_name = #{pName}
+  </select>
+  <select id="selectIdByName" parameterType="String" resultType="int">
+    select p_id from product_info where p_name = #{pName}
+  </select>
+  <select id="getById" parameterType="int" resultMap="BaseResultMap1">
+    select o.o_id,o.o_name,p.p_name,o.p_num,o.money,o.o_address,o.phone,o.paystate from  orders o,product_info p where o.p_id=p.p_id and o.o_id = #{oid}
+  </select>
+  <!--批量删除-->
+  <delete id="deleteBatch">
+    delete from orders where o_id in
+    /* 采用foreach来拼接多个数据
+    * collection="array" 数组类型
+    * separator="," 每个数值之间的间隔符
+    * open="(" 开始的字符
+    * close=")" 结束的字符
+    */
+    <foreach collection="array" item="oid" separator="," open="(" close=")">
+      #{oid}
+    </foreach>
+  </delete>
+</mapper>
